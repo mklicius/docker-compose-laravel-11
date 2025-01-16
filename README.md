@@ -9,7 +9,7 @@ Next, navigate in your terminal to the directory you cloned this, and spin up th
 
 After that completes, follow the steps from the [src/README.md](src/README.md) file to get your Laravel project added in (or create a new blank one).
 
-**Note**: Your MySQL database host name should be `mysql`, **not** `localhost`. The username and database should both be `homestead` with a password of `secret`. 
+**Note**: Your MySQL database host name should be `mysql`, **not** `localhost` because containers communicate using service names rather than `localhost`. The username and database should both be `homestead` with a password of `secret`. 
 
 Bringing up the Docker Compose network with `app` instead of just using `up`, ensures that only our site's containers are brought up at the start, instead of all of the command containers as well. The following are built for our web server, with their exposed ports detailed:
 
@@ -20,6 +20,7 @@ Bringing up the Docker Compose network with `app` instead of just using `up`, en
 - **mailhog** - `:8025` 
 
 Three additional containers are included that handle Composer, NPM, and Artisan commands *without* having to have these platforms installed on your local computer. Use the following command examples from your project root, modifying them to fit your particular use case.
+These containers are not configured to be running peristently, but are instead runnable via below commands which ensure that after executing the command the container is removed to avoid wasting resources.
 
 - `docker-compose run --rm composer update`
 - `docker-compose run --rm npm run dev`
@@ -48,12 +49,18 @@ Then, either bring back up your container network or re-run the command you were
 
 By default, whenever you bring down the Docker network, your MySQL data will be removed after the containers are destroyed. If you would like to have persistent data that remains after bringing containers down and back up, do the following:
 
-1. Create a `mysql` folder in the project root, alongside the `nginx` and `src` folders.
+1. Create a `mysql_data` folder in the project root, alongside the `nginx` and `src` folders.
 2. Under the mysql service in your `docker-compose.yml` file, add the following lines:
 
 ```
 volumes:
-  - ./mysql:/var/lib/mysql
+  - ./mysql_data:/var/lib/mysql
+```
+Alternatively you can skip step 1 and move onto step 3 if you make the following adjustments to your `docker-compose.yml` at the end of the file:
+
+```
+volumes: 
+  mysql_data:
 ```
 
 ## Usage in Production
