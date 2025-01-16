@@ -22,6 +22,10 @@ RUN sed -i "s/user = www-data/user = laravel/g" /usr/local/etc/php-fpm.d/www.con
 RUN sed -i "s/group = www-data/group = laravel/g" /usr/local/etc/php-fpm.d/www.conf
 RUN echo "php_admin_flag[log_errors] = on" >> /usr/local/etc/php-fpm.d/www.conf
 
+# ensure the previously created laravel user owns all project files
+# Laravel 11 requires that storage and cache directories have the correct permissions
+RUN chown -R laravel:laravel /var/www/html
+
 RUN docker-php-ext-install pdo pdo_mysql
 
 RUN mkdir -p /usr/src/php/ext/redis \
