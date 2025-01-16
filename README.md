@@ -73,15 +73,19 @@ This configuration should be able to compile assets with both [laravel mix](http
 
 ```json
 "scripts": {
-  "dev": "vite --host 0.0.0.0",
+  "dev": "vite --host",
   "build": "vite build"
 },
 ```
+
+`--host` flag is necessary to ensure that Vite listens on all network interfaces, otherwise might not work with localhost
 
 Then, run the following commands to install your dependencies and start the dev server:
 
 - `docker-compose run --rm npm install`
 - `docker-compose run --rm --service-ports npm run dev`
+
+`--service-ports` flag ensures that all the ports listed for npm service are exposed
 
 After that, you should be able to use `@vite` directives to enable hot-module reloading on your local Laravel application.
 
