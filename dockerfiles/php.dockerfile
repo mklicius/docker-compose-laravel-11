@@ -1,4 +1,4 @@
-FROM php:8-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 ARG UID
 ARG GID
@@ -29,7 +29,7 @@ RUN chown -R laravel:laravel /var/www/html
 RUN docker-php-ext-install pdo pdo_mysql
 
 RUN mkdir -p /usr/src/php/ext/redis \
-    && curl -L https://github.com/phpredis/phpredis/archive/5.3.4.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
+    && curl -L https://github.com/phpredis/phpredis/archive/6.1.0.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
     && echo 'redis' >> /usr/src/php-available-exts \
     && docker-php-ext-install redis
     
